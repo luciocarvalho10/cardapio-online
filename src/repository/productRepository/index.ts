@@ -9,13 +9,13 @@ import {
   set,
   update} from 'firebase/database';
 
-import { Product } from '@/interfaces/IProduct';
+import { IProduct } from '@/interfaces/IProduct';
 import { IRepository } from '@/interfaces/IRepository'; // Ajuste o caminho
 
 /**
  * Implementação do repositório de produtos para o Firebase Realtime Database.
  */
-export class ProductRepository implements IRepository<Product, string> {
+export class ProductRepository implements IRepository<IProduct, string> {
   private basePath: string; // Caminho base no Realtime Database (ex: "products")
   private db: Database; // Instância do Realtime Database
 
@@ -38,8 +38,8 @@ export class ProductRepository implements IRepository<Product, string> {
    * @param snapshot O DataSnapshot.
    * @returns Um array de produtos.
    */
-  private snapshotToArray(snapshot: DataSnapshot): Product[] {
-    const products: Product[] = [];
+  private snapshotToArray(snapshot: DataSnapshot): IProduct[] {
+    const products: IProduct[] = [];
     snapshot.forEach((childSnapshot) => {
       const id = childSnapshot.key as string;
       const data = childSnapshot.val();
@@ -52,13 +52,13 @@ export class ProductRepository implements IRepository<Product, string> {
 
   // --- Métodos CRUD ---
 
-  async create(item: Product): Promise<Product> {
+  async create(item: IProduct): Promise<IProduct> {
     const itemRef = this.getItemRef(item.id);
     await set(itemRef, item);
     return item;
   }
 
-  async getById(id: string): Promise<Product | null> {
+  async getById(id: string): Promise<IProduct | null> {
     const itemRef = this.getItemRef(id);
     const snapshot = await get(itemRef);
     if (snapshot.exists()) {
@@ -67,7 +67,7 @@ export class ProductRepository implements IRepository<Product, string> {
     return null;
   }
 
-  async getAll(): Promise<Product[]> {
+  async getAll(): Promise<IProduct[]> {
     const collectionRef = ref(this.db, this.basePath);
     const snapshot = await get(collectionRef);
     if (snapshot.exists()) {
@@ -76,7 +76,7 @@ export class ProductRepository implements IRepository<Product, string> {
     return [];
   }
 
-  async update(id: string, updates: Partial<Product>): Promise<Product | null> {
+  async update(id: string, updates: Partial<IProduct>): Promise<IProduct | null> {
     const itemRef = this.getItemRef(id);
     const existingItem = await this.getById(id);
 
@@ -105,7 +105,7 @@ export class ProductRepository implements IRepository<Product, string> {
    * @param callback A função a ser chamada com a lista atualizada de produtos.
    * @returns Uma função para desinscrever o listener.
    */
-  listen(callback: (products: Product[]) => void): () => void {
+  listen(callback: (products: IProduct[]) => void): () => void {
     const collectionRef = ref(this.db, this.basePath);
     const unsubscribe = onValue(collectionRef, (snapshot) => {
       const products = this.snapshotToArray(snapshot);

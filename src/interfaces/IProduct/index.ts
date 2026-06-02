@@ -1,5 +1,5 @@
 // Exemplo de uma entidade de dados
-export interface Product {
+export interface IProduct {
   id: string;
   name: string;
   price: number;

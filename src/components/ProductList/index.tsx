@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from 'react';
 
 import { useFirebase } from '@/context/firebase/useFirebase';
-import { Product } from '@/interfaces/IProduct'; // Ajuste o caminho
+import { IProduct } from '@/interfaces/IProduct'; // Ajuste o caminho
 
 export default function ProductList() {
   const { productRepository } = useFirebase();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ export default function ProductList() {
     try {
       setLoading(true);
       const now = Date.now();
-      const newProduct: Product = {
+      const newProduct: IProduct = {
         id: 'product_' + now, // Gerar um ID único
         name: `Novo Produto ${now}`,
         price: Math.floor(Math.random() * 100) + 10,

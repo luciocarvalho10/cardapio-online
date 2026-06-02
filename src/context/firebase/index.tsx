@@ -1,7 +1,7 @@
 'use client'
 import { createContext, type ReactNode } from 'react';
 
-import { ProductRepository } from '@/repository/productRepository';
+import { ProductRepository } from '@/repository/ProductRepository';
 import app, { database } from '@/services/firebase';
 
 export type FirebaseContextType =  {
