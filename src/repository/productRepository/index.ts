@@ -1,4 +1,3 @@
-// repositories/ProductRepository
 import {
   Database,
   DataSnapshot,

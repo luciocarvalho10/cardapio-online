@@ -31,6 +31,10 @@ export default function ProductList() {
         name: `Novo Produto ${now}`,
         price: Math.floor(Math.random() * 100) + 10,
         description: `Descrição de um novo produto ID: product_${now}.`,
+        image: '',
+        categoryId: '',
+        available: true,
+        showable: true,
       };
       await productRepository.create(newProduct);
       setLoading(false);

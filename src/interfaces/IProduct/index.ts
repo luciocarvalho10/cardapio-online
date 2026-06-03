@@ -1,8 +1,10 @@
-// Exemplo de uma entidade de dados
 export interface IProduct {
   id: string;
   name: string;
+  description: string;
   price: number;
-  description?: string;
-  // ... outras propriedades do produto
+  image: string;
+  categoryId: string;
+  available: boolean;
+  showable: boolean;
 }

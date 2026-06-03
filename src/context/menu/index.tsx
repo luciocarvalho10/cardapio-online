@@ -1,28 +1,17 @@
 import {
   createContext,
   ReactNode,
-  useContext,
   useEffect,
   useState,
 } from "react";
 
 import { ICategory } from "@/interfaces/ICategory";
+import { IProduct } from "@/interfaces/IProduct";
 
-
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  categoryId: string;
-  available: boolean;
-  showable: boolean;
-}
 
 interface MenuContextType {
   categories: ICategory[];
-  products: Product[];
+  products: IProduct[];
   isAuthenticated: boolean;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
@@ -31,8 +20,8 @@ interface MenuContextType {
   addCategory: (category: Omit<ICategory, "id">) => void;
   updateCategory: (id: string, category: Partial<ICategory>) => void;
   deleteCategory: (id: string) => void;
-  addProduct: (product: Omit<Product, "id">) => void;
-  updateProduct: (id: string, product: Partial<Product>) => void;
+  addProduct: (product: Omit<IProduct, "id">) => void;
+  updateProduct: (id: string, product: Partial<IProduct>) => void;
   deleteProduct: (id: string) => void;
 }
 
@@ -43,7 +32,7 @@ const initialCategories: ICategory[] = [
   { id: "cat-4", name: "Sobremesas", icon: "🍰", order: 4 },
 ];
 
-const initialProducts: Product[] = [
+const initialProducts: IProduct[] = [
   {
     id: "prod-1",
     name: "Bruschetta ao Tomate",
@@ -153,11 +142,11 @@ const initialProducts: Product[] = [
   },
 ];
 
-const MenuContext = createContext<MenuContextType | undefined>(undefined);
+export const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
 export function MenuProvider({ children }: { children: ReactNode }) {
   const [categories, setCategories] = useState<ICategory[]>(initialCategories);
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [products, setProducts] = useState<IProduct[]>(initialProducts);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem("darkMode") === "true";
@@ -204,12 +193,12 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     setProducts((prev) => prev.filter((p) => p.categoryId !== id));
   };
 
-  const addProduct = (prod: Omit<Product, "id">) => {
-    const newProd: Product = { ...prod, id: `prod-${Date.now()}` };
+  const addProduct = (prod: Omit<IProduct, "id">) => {
+    const newProd: IProduct = { ...prod, id: `prod-${Date.now()}` };
     setProducts((prev) => [...prev, newProd]);
   };
 
-  const updateProduct = (id: string, prod: Partial<Product>) => {
+  const updateProduct = (id: string, prod: Partial<IProduct>) => {
     setProducts((prev) =>
       prev.map((p) => (p.id === id ? { ...p, ...prod } : p)),
     );
@@ -242,8 +231,3 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useMenu() {
-  const ctx = useContext(MenuContext);
-  if (!ctx) throw new Error("useMenu must be used within MenuProvider");
-  return ctx;
-}
