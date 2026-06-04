@@ -1,3 +1,5 @@
+'use client';
+
 import {
   createContext,
   ReactNode,
@@ -7,6 +9,9 @@ import {
 
 import { ICategory } from "@/interfaces/ICategory";
 import { IProduct } from "@/interfaces/IProduct";
+import { CategoryRepository } from "@/repository/Category";
+import { ProductRepository } from "@/repository/Product";
+
 
 
 interface MenuContextType {
@@ -23,6 +28,8 @@ interface MenuContextType {
   addProduct: (product: Omit<IProduct, "id">) => void;
   updateProduct: (id: string, product: Partial<IProduct>) => void;
   deleteProduct: (id: string) => void;
+  ProductRepository: typeof ProductRepository;
+  CategoryRepository: typeof CategoryRepository;
 }
 
 const initialCategories: ICategory[] = [
@@ -144,6 +151,7 @@ const initialProducts: IProduct[] = [
 
 export const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
+
 export function MenuProvider({ children }: { children: ReactNode }) {
   const [categories, setCategories] = useState<ICategory[]>(initialCategories);
   const [products, setProducts] = useState<IProduct[]>(initialProducts);
@@ -224,6 +232,8 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         addProduct,
         updateProduct,
         deleteProduct,
+        ProductRepository,
+        CategoryRepository,
       }}
     >
       {children}

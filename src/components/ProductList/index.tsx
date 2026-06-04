@@ -2,41 +2,42 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { useFirebase } from '@/context/firebase/useFirebase';
+import { useMenu } from '@/context/menu/useMenu';
 import { IProduct } from '@/interfaces/IProduct'; // Ajuste o caminho
 
 export default function ProductList() {
-  const { productRepository } = useFirebase();
+  const { ProductRepository } = useMenu();
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Exemplo de uso do método listen para updates em tempo real
-    const unsubscribe = productRepository.listen(latestProducts => {
+    const unsubscribe = ProductRepository.listen(latestProducts => {
       setProducts(latestProducts);
       setLoading(false);
     });
 
     // Retorne a função de desinscrição para limpar o listener
     return () => unsubscribe();
-  }, [productRepository]); // Re-execute se a instância do repositório mudar (improvável)
+  }, [ProductRepository]); // Re-execute se a instância do repositório mudar (improvável)
 
   const handleAddProduct = async () => {
     try {
       setLoading(true);
-      const now = Date.now();
       const newProduct: IProduct = {
-        id: 'product_' + now, // Gerar um ID único
-        name: `Novo Produto ${now}`,
-        price: Math.floor(Math.random() * 100) + 10,
-        description: `Descrição de um novo produto ID: product_${now}.`,
-        image: '',
-        categoryId: '',
+        id: 'prod-1',
+        name: 'Bruschetta ao Tomate',
+        description:
+          'Pão italiano tostado com tomate fresco, alho, azeite e manjericão',
+        price: 28.9,
+        image:
+          'https://images.unsplash.com/photo-1761315412580-08dd503b8d89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600',
+        categoryId: 'cat-1',
         available: true,
         showable: true,
       };
-      await productRepository.create(newProduct);
+      await ProductRepository.create(newProduct);
       setLoading(false);
       alert('Produto adicionado com sucesso!');
     } catch (err) {
@@ -49,7 +50,7 @@ export default function ProductList() {
   const handleDeleteProduct = async (id: string) => {
     try {
       setLoading(true);
-      await productRepository.delete(id);
+      await ProductRepository.delete(id);
       setLoading(false);
       alert('Produto deletado com sucesso!');
     } catch (err) {
