@@ -49,4 +49,3 @@ export interface IRepository<T extends { id: ID }, ID = string> {
    */
   listen?(callback: (items: T[]) => void): () => void;
 }
-

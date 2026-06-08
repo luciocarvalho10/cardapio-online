@@ -2,7 +2,6 @@ import { useContext } from 'react';
 
 import { FirebaseContext } from '@/context/firebase/index';
 
-
 export function useFirebase() {
   const context = useContext(FirebaseContext);
   if (!context) {

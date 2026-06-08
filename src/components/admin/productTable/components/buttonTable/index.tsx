@@ -1,4 +1,4 @@
-import IC from "../../../icons";
+import IC from '@/components/icons';
 
 type ButtonTableProps = {
   active: boolean;
@@ -18,13 +18,12 @@ export function ButtonTable({
   return (
     <button
       onClick={onClick}
-      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs transition-colors ${
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs transition-colors ${
         active
-          ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200" +
-            " dark:hover:bg-green-900/50 "
-          : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 "
-      } ${className}`}
-    >
+          ? 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400' +
+            ' dark:hover:bg-green-900/50'
+          : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
+      } ${className}`}>
       {active ? <IC.Eye size={12} /> : <IC.EyeOff size={12} />}
       {active ? activeLabel : inactiveLabel}
     </button>

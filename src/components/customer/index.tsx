@@ -1,11 +1,13 @@
-import { CustomerCategoryHeader } from "./CustomerCategoryHeader";
-import { CustomerCategoryTabs } from "./customerCategoryTabs";
-import { CustomerProductCard } from "./customerProductCard";
-import { CustomerSearchBar } from "./customerSearchBar";
+import { CustomerCategoryHeader } from './customerCategoryHeader';
+import { CustomerCategoryTabs } from './customerCategoryTabs';
+import { CustomerProductCard } from './customerProductCard';
+import { CustomerSearchBar } from './customerSearchBar';
 
-export default {
+const Customer = {
   CustomerCategoryHeader,
   CustomerCategoryTabs,
   CustomerProductCard,
   CustomerSearchBar,
 };
+
+export default Customer;

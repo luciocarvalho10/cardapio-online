@@ -1,4 +1,4 @@
-import { getApp,getApps, initializeApp } from 'firebase/app';
+import { getApp, getApps, initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database'; // Importe getDatabase para o Realtime Database
 
 const firebaseConfig = {

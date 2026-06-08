@@ -1,8 +1,8 @@
 export function Footer() {
   return (
-    <footer className="bg-gray-900 dark:bg-gray-950 text-gray-400 dark:text-gray-600 text-center py-6 text-sm border-t border-gray-800 dark:border-gray-900 transition-colors">
+    <footer className='border-t border-gray-800 bg-gray-900 py-6 text-center text-sm text-gray-400 transition-colors dark:border-gray-900 dark:bg-gray-950 dark:text-gray-600'>
       <p>© 2026 Bella Cucina · Todos os direitos reservados</p>
-      <p className="text-xs mt-1 text-gray-600 dark:text-gray-700">
+      <p className='mt-1 text-xs text-gray-600 dark:text-gray-700'>
         Cardápio sujeito a alterações sem aviso prévio
       </p>
     </footer>

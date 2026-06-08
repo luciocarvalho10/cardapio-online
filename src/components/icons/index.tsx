@@ -1,2 +1,3 @@
-import * as IC from "lucide-react";
+import * as IC from 'lucide-react';
+
 export default IC;

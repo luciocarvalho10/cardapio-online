@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState } from 'react';
 
@@ -25,7 +25,12 @@ export default function CategoryList() {
   const handleAddCategory = async () => {
     try {
       setLoading(true);
-      const newCategory: ICategory = { id: "cat-1", name: "Entradas", icon: "🥗", order: 1 };
+      const newCategory: ICategory = {
+        id: 'cat-1',
+        name: 'Entradas',
+        icon: '🥗',
+        order: 1,
+      };
       await CategoryRepository.create(newCategory);
       setLoading(false);
       alert('Categoria adicionada com sucesso!');

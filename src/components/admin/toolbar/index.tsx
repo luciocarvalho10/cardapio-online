@@ -1,4 +1,4 @@
-import IC from "../../icons";
+import IC from '@/components/icons';
 
 type ToolbarProps = {
   categories: { id: string; name: string; icon: string }[];
@@ -18,39 +18,34 @@ export default function Toolbar({
   setFilterCat,
 }: ToolbarProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 mb-4">
-      <div className="relative flex-1">
+    <div className='mb-4 flex flex-col gap-3 sm:flex-row'>
+      <div className='relative flex-1'>
         <IC.Search
           size={16}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
+          className='absolute top-1/2 left-3 -translate-y-1/2 text-gray-400 dark:text-gray-500'
         />
         <input
-          type="text"
+          type='text'
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Buscar produto..."
-          className="w-full pl-9 pr-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 dark:focus:ring-amber-900/40 transition-all"
+          onChange={e => setSearch(e.target.value)}
+          placeholder='Buscar produto...'
+          className='w-full rounded-xl border border-gray-200 bg-white py-2.5 pr-4 pl-9 transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-100 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-amber-900/40'
         />
       </div>
       <select
         value={filterCat}
-        onChange={(e) => setFilterCat(e.target.value)}
-        className="px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 dark:text-gray-300 text-gray-700 focus:outline-none focus:border-amber-400 transition-colors"
-      >
-        <option value="all">Todas as categorias</option>
-        {categories.map((c) => (
-          <option
-            key={c.id}
-            value={c.id}
-          >
+        onChange={e => setFilterCat(e.target.value)}
+        className='rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-gray-700 transition-colors focus:border-amber-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300'>
+        <option value='all'>Todas as categorias</option>
+        {categories.map(c => (
+          <option key={c.id} value={c.id}>
             {c.icon} {c.name}
           </option>
         ))}
       </select>
       <button
         onClick={openAdd}
-        className="flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl transition-colors shadow-md text-sm whitespace-nowrap"
-      >
+        className='flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2.5 text-sm whitespace-nowrap text-white shadow-md transition-colors hover:bg-amber-600'>
         <IC.Plus size={16} /> Novo produto
       </button>
     </div>

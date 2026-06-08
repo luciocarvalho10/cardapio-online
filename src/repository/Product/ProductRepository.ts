@@ -6,7 +6,8 @@ import {
   ref,
   remove,
   set,
-  update} from 'firebase/database';
+  update,
+} from 'firebase/database';
 
 import { IProduct } from '@/interfaces/IProduct';
 import { IRepository } from '@/interfaces/IRepository'; // Ajuste o caminho
@@ -39,7 +40,7 @@ export class ProductRepository implements IRepository<IProduct, string> {
    */
   private snapshotToArray(snapshot: DataSnapshot): IProduct[] {
     const products: IProduct[] = [];
-    snapshot.forEach((childSnapshot) => {
+    snapshot.forEach(childSnapshot => {
       const id = childSnapshot.key as string;
       const data = childSnapshot.val();
       if (data) {
@@ -75,7 +76,10 @@ export class ProductRepository implements IRepository<IProduct, string> {
     return [];
   }
 
-  async update(id: string, updates: Partial<IProduct>): Promise<IProduct | null> {
+  async update(
+    id: string,
+    updates: Partial<IProduct>,
+  ): Promise<IProduct | null> {
     const itemRef = this.getItemRef(id);
     const existingItem = await this.getById(id);
 
@@ -106,7 +110,7 @@ export class ProductRepository implements IRepository<IProduct, string> {
    */
   listen(callback: (products: IProduct[]) => void): () => void {
     const collectionRef = ref(this.db, this.basePath);
-    const unsubscribe = onValue(collectionRef, (snapshot) => {
+    const unsubscribe = onValue(collectionRef, snapshot => {
       const products = this.snapshotToArray(snapshot);
       callback(products);
     });

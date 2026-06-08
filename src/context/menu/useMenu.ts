@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useContext } from 'react';
 
-import { MenuContext } from ".";
+import { MenuContext } from '.';
 
 export function useMenu() {
   const ctx = useContext(MenuContext);
-  if (!ctx) throw new Error("useMenu must be used within MenuProvider");
+  if (!ctx) throw new Error('useMenu must be used within MenuProvider');
   return ctx;
 }

@@ -1,12 +1,18 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import { FirebaseProvider } from "@/context/firebase";
-import { MenuProvider } from "@/context/menu";
+import { FirebaseProvider } from '@/context/firebase';
+import { MenuProvider } from '@/context/menu';
 
-export function Provider({ children }: { children: ReactNode }){
+import DragAndDropProvider from './dragAndDrop';
+
+export function Provider({ children }: { children: ReactNode }) {
   return (
     <FirebaseProvider>
-      <MenuProvider>{children}</MenuProvider>
+      <MenuProvider>
+        <DragAndDropProvider>
+          {children}
+        </DragAndDropProvider>
+      </MenuProvider>
     </FirebaseProvider>
   );
 }

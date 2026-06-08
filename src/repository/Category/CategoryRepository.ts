@@ -6,7 +6,8 @@ import {
   ref,
   remove,
   set,
-  update} from 'firebase/database';
+  update,
+} from 'firebase/database';
 
 import { ICategory } from '@/interfaces/ICategory';
 import { IRepository } from '@/interfaces/IRepository';
@@ -31,18 +32,18 @@ export class CategoryRepository implements IRepository<ICategory, string> {
   /**
    * Helper para converter um DataSnapshot do Firebase para um array de produtos.
    * @param snapshot O DataSnapshot.
-   * @returns Um array de produtos.
+   * @returns Um array de categrias.
    */
   private snapshotToArray(snapshot: DataSnapshot): ICategory[] {
-    const products: ICategory[] = [];
+    const categories: ICategory[] = [];
     snapshot.forEach(childSnapshot => {
       const id = childSnapshot.key as string;
       const data = childSnapshot.val();
       if (data) {
-        products.push({ id, ...data });
+        categories.push({ id, ...data });
       }
     });
-    return products;
+    return categories;
   }
 
   // --- Métodos CRUD ---

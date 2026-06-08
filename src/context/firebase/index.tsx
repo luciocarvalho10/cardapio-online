@@ -1,12 +1,12 @@
-'use client'
+'use client';
 import { createContext, type ReactNode } from 'react';
 
 import app, { database } from '@/services/firebase';
 
-export type FirebaseContextType =  {
-  app: typeof app,
-  database: typeof database,
-} | null
+export type FirebaseContextType = {
+  app: typeof app;
+  database: typeof database;
+} | null;
 
 // Crie o contexto
 export const FirebaseContext = createContext<FirebaseContextType>(null);
