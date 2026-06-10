@@ -14,6 +14,9 @@ export function ProductTableCard({ product }: ProductTableCardProps) {
           src={product.image}
           alt={product.name}
           className='h-full w-full object-cover'
+          width={400}
+          height={300}
+          loading="eager"
         />
       </div>
       <div>

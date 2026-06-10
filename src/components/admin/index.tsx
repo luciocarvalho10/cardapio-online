@@ -1,5 +1,7 @@
 import CategoryManager from './categoryManager';
 import HeaderAdminPage from './headerAdminPage';
+import Dashboard from './pages/dashboard';
+import Login from './pages/login';
 import ProductForm from './productForm';
 import ProductTable from './productTable';
 import ProtectedRoute from './protectedRoute';
@@ -9,7 +11,9 @@ import Toolbar from './toolbar';
 
 const Admin = {
   CategoryManager,
+  Dashboard,
   HeaderAdminPage,
+  Login,
   ProductForm,
   ProductTable,
   ProtectedRoute,

@@ -1,5 +1,6 @@
+'use client';
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useNavigate } from "react-router";
 
 import Admin from "@/components/admin";
 import { NotProduct } from "@/components/notProduct";
@@ -8,10 +9,10 @@ import { IProduct } from "@/interfaces/IProduct";
 
 export type Tab = "products" | "categories";
 
-export default function AdminDashboardPage() {
+export default function Dashboard() {
   const { categories, products, logout, updateProduct, deleteProduct } =
     useMenu();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [tab, setTab] = useState<Tab>("products");
   const [showForm, setShowForm] = useState(false);
   const [editProduct, setEditProduct] = useState<IProduct | null>(null);
@@ -21,7 +22,7 @@ export default function AdminDashboardPage() {
 
   const handleLogout = () => {
     logout();
-    navigate("/admin");
+    router.push("/admin");
   };
 
   const openAdd = () => {

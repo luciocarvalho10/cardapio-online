@@ -33,6 +33,9 @@ export function ProductCard({
             src={productCard.image}
             alt={productCard.name}
             className='h-full w-full object-cover'
+            width={400}
+            height={300}
+            loading="eager"
           />
         </div>
         {cat && (

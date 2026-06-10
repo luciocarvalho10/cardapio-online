@@ -1,15 +1,16 @@
+'use client';
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SyntheticEvent, useState } from "react";
-import { useNavigate } from "react-router";
 
 import IC from "@/components/icons";
 import Loanding from '@/components/loanding'
 import ThemeButton from "@/components/themeButton";
 import { useMenu } from "@/context/menu/useMenu";
 
-export default function AdminLoginPage() {
+export default function Login() {
   const { login, isDarkMode } = useMenu();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +25,7 @@ export default function AdminLoginPage() {
     const ok = login(username, password);
     setLoading(false);
     if (ok) {
-      navigate("/admin/dashboard");
+      router.push("/admin");
     } else {
       setError("Usuário ou senha incorretos.");
     }

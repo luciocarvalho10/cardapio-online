@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import { SyntheticEvent,useEffect, useState } from 'react';
 
@@ -103,6 +104,9 @@ export default function ProductForm({ product, onClose }: Props) {
                 src={form.image}
                 alt='preview'
                 className='h-full w-full object-cover'
+                width={400}
+                height={300}
+                loading="eager"
               />
             </div>
           )}
