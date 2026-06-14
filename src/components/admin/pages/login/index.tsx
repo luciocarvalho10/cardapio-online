@@ -49,7 +49,7 @@ export default function Login() {
       />
 
       {/* Dark mode toggle */}
-      <ThemeButton.ThemeButtonBar />
+      <ThemeButton.ThemeButtonPage />
 
       <div className="relative w-full max-w-md">
         {/* Logo */}

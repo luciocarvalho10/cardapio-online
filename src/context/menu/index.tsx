@@ -13,7 +13,7 @@ interface MenuContextType {
   isAuthenticated: boolean;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
-  login: (username: string, password: string) => boolean;
+  login: () => void; //(username: string, password: string) => boolean;
   logout: () => void;
   addCategory: (category: Omit<ICategory, 'id'>) => void;
   updateCategory: (id: string, category: Partial<ICategory>) => void;
@@ -25,14 +25,14 @@ interface MenuContextType {
   CategoryRepository: typeof CategoryRepository;
 }
 
-const initialCategories: ICategory[] = [
+const initialCategories = await CategoryRepository.getAll().then(cats => cats.length > 0 ? cats : [
   { id: 'cat-1', name: 'Entradas', icon: '🥗', order: 1 },
   { id: 'cat-2', name: 'Pratos Principais', icon: '🍽️', order: 2 },
   { id: 'cat-3', name: 'Bebidas', icon: '🥤', order: 3 },
   { id: 'cat-4', name: 'Sobremesas', icon: '🍰', order: 4 },
-];
+]);
 
-const initialProducts: IProduct[] = [
+const initialProducts =await ProductRepository.getAll().then(prods => prods.length > 0 ? prods : [
   {
     id: 'prod-1',
     name: 'Bruschetta ao Tomate',
@@ -140,69 +140,98 @@ const initialProducts: IProduct[] = [
     available: true,
     showable: true,
   },
-];
+]);
 
 export const MenuContext = createContext<MenuContextType | undefined>(
   undefined,
 );
 
+
 export function MenuProvider({ children }: { children: ReactNode }) {
   const [categories, setCategories] = useState<ICategory[]>(initialCategories);
   const [products, setProducts] = useState<IProduct[]>(initialProducts);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('darkMode') === 'true';
-  });
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    // Carregar valor salvo do localStorage na montagem do cliente
+    if (typeof window !== 'undefined') {
+      const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+      setIsDarkMode(savedDarkMode);
     }
-    localStorage.setItem('darkMode', String(isDarkMode));
+  }, []);
+
+  useEffect(() => {
+    // Atualizar classe do DOM e salvar no localStorage
+    if (typeof window !== 'undefined') {
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem('darkMode', String(isDarkMode));
+    }
   }, [isDarkMode]);
 
   const toggleDarkMode = () => setIsDarkMode(prev => !prev);
 
-  const login = (username: string, password: string): boolean => {
-    if (username === 'admin' && password === 'admin123') {
-      setIsAuthenticated(true);
-      return true;
-    }
-    return false;
-  };
+  // const login = (username: string, password: string): boolean => {
+  //   if (username === 'admin' && password === 'admin123') {
+  //     setIsAuthenticated(true);
+  //     return true;
+  //   }
+  //   return false;
+  // };
+  const login = () => setIsAuthenticated(true); // Para facilitar o desenvolvimento, vamos considerar que o login sempre é bem-sucedido
 
   const logout = () => setIsAuthenticated(false);
 
-  const addCategory = (cat: Omit<ICategory, 'id'>) => {
-    const newCat: ICategory = { ...cat, id: `cat-${Date.now()}` };
+  const addCategory = async (cat: Omit<ICategory, 'id'>) => {
+    const id = `cat-${await CategoryRepository.getAll().then(p => p.length + 1)}`
+    // const newCat: ICategory = { ...cat, id: `cat-${Date.now()}` };
+    const newCat: ICategory = await CategoryRepository.create({ ...cat, id });
     setCategories(prev => [...prev, newCat].sort((a, b) => a.order - b.order));
   };
 
-  const updateCategory = (id: string, cat: Partial<ICategory>) => {
+  const updateCategory = async(id: string, cat: Partial<ICategory>) => {
+    const updatedCat = await CategoryRepository.update(id, cat) || { id, ...cat } as ICategory;
+
     setCategories(prev =>
       prev
-        .map(c => (c.id === id ? { ...c, ...cat } : c))
+        // .map(c => (c.id === id ? { ...c, ...cat } : c))
+        .map(c => (c.id === id ? {...c, ...updatedCat} : c))
         .sort((a, b) => a.order - b.order),
     );
   };
 
   const deleteCategory = (id: string) => {
+    const success = CategoryRepository.delete(id);
+    if (!success) {
+      alert('Erro ao deletar categoria. Tente novamente.');
+      return;
+    }
     setCategories(prev => prev.filter(c => c.id !== id));
     setProducts(prev => prev.filter(p => p.categoryId !== id));
   };
 
-  const addProduct = (prod: Omit<IProduct, 'id'>) => {
-    const newProd: IProduct = { ...prod, id: `prod-${Date.now()}` };
+  const addProduct = async (prod: Omit<IProduct, 'id'>) => {
+      const id = `prod-${await ProductRepository.getAll().then(p => p.length + 1)}`
+    // const newProd: IProduct = { ...prod, id: `prod-${Date.now()}` };
+    const newProd: IProduct = await ProductRepository.create({ ...prod, id });
     setProducts(prev => [...prev, newProd]);
   };
 
-  const updateProduct = (id: string, prod: Partial<IProduct>) => {
-    setProducts(prev => prev.map(p => (p.id === id ? { ...p, ...prod } : p)));
+  const updateProduct = async (id: string, prod: Partial<IProduct>) => {
+    const updatedProd = await ProductRepository.update(id, prod) || { id, ...prod } as IProduct;
+    setProducts(prev => prev.map(p => (p.id === id ? { ...p, ...updatedProd } : p)));
   };
 
   const deleteProduct = (id: string) => {
+    const success = ProductRepository.delete(id);
+    if (!success) {
+      alert('Erro ao deletar produto. Tente novamente.');
+      return;
+    }
     setProducts(prev => prev.filter(p => p.id !== id));
   };
 
