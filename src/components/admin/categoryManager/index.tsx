@@ -1,26 +1,19 @@
 'use client';
-import {
-  SyntheticEvent,
-  useEffect,
-  useState,
-} from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 
-// import { DndProvider, useDrag, useDrop } from 'react-dnd';
-// import { HTML5Backend } from 'react-dnd-html5-backend';
 import IC from '@/components/icons';
 import { useMenu } from '@/context/menu/useMenu';
-import { ICategory } from '@/interfaces/ICategory'
+import { ICategory } from '@/interfaces/ICategory';
 import categoryIcons from '@/utils/categoryIcons';
 
 import DraggableCategoryItem from './draggableCategoryItem';
-
 
 export default function CategoryManager() {
   const { categories, products, addCategory, updateCategory, deleteCategory } =
     useMenu();
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: '', icon: '🍽️', order: 1 });
+  const [form, setForm] = useState({ name: '', icon: '🍽️', order: categories.length + 1 });
   const [editForm, setEditForm] = useState({ name: '', icon: '', order: 0 });
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [orderedCategories, setOrderedCategories] = useState<ICategory[]>([]);
@@ -142,9 +135,7 @@ export default function CategoryManager() {
                 <input
                   type='number'
                   value={form.order}
-                  onChange={e =>
-                    setForm({ ...form, order: Number(e.target.value) })
-                  }
+                  onChange={e => setForm({ ...form, order: Number(e.target.value) })}
                   placeholder='Ordem'
                   min='1'
                   className='w-20 rounded-xl border border-amber-200 bg-white px-3 py-2 transition-colors focus:border-amber-400 focus:outline-none dark:border-amber-800 dark:bg-gray-800 dark:text-gray-100'
