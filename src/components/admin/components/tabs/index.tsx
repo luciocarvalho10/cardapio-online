@@ -1,14 +1,15 @@
 import { SetStateAction } from 'react';
 
+import { Tab } from '@/components/admin/pages/dashboard'
 import IC from '@/components/icons';
 
 type TabsProps = {
-  tab: string;
-  setTab: (value: SetStateAction<'products' | 'categories'>) => void;
+  tab: Tab;
+  setTab: (value: SetStateAction<Tab>) => void;
 };
 
 export default function Tabs({ tab, setTab }: TabsProps) {
-  const classButton = (el: string) =>
+  const classButton = (el: Tab) =>
     tab === el
       ? 'bg-white dark:bg-gray-700 shadow text-gray-800 dark:text-gray-100'
       : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200';
@@ -24,6 +25,11 @@ export default function Tabs({ tab, setTab }: TabsProps) {
         onClick={() => setTab('categories')}
         className={`flex items-center gap-2 rounded-lg px-5 py-2 text-sm transition-all ${classButton('categories')}`}>
         <IC.Tags size={16} /> Categorias
+      </button>
+      <button
+        onClick={() => setTab('users')}
+        className={`flex items-center gap-2 rounded-lg px-5 py-2 text-sm transition-all ${classButton('users')}`}>
+        <IC.Users size={16} /> Usuários
       </button>
     </div>
   );

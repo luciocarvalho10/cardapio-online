@@ -1,13 +1,14 @@
-import CategoryManager from './categoryManager';
-import HeaderAdminPage from './headerAdminPage';
+import CategoryManager from './components/categoryManager';
+import HeaderAdminPage from './components/headerAdminPage';
+import ProductForm from './components/productForm';
+import ProductTable from './components/productTable';
+import ProtectedRoute from './components/protectedRoute';
+import Stats from './components/stats';
+import Tabs from './components/tabs';
+import Toolbar from './components/toolbar';
+import UserManager from './components/userManager';
 import Dashboard from './pages/dashboard';
 import Login from './pages/login';
-import ProductForm from './productForm';
-import ProductTable from './productTable';
-import ProtectedRoute from './protectedRoute';
-import Stats from './stats';
-import Tabs from './tabs';
-import Toolbar from './toolbar';
 
 const Admin = {
   CategoryManager,
@@ -20,6 +21,7 @@ const Admin = {
   Stats,
   Tabs,
   Toolbar,
+  UserManager,
 };
 
 export default Admin;

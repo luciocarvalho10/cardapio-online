@@ -7,7 +7,7 @@ import { NotProduct } from "@/components/notProduct";
 import { useMenu } from "@/context/menu/useMenu";
 import { IProduct } from "@/interfaces/IProduct";
 
-export type Tab = "products" | "categories";
+export type Tab = "products" | "categories" | "users";
 
 export default function Dashboard() {
   const { categories, products, logout, updateProduct, deleteProduct } =
@@ -22,7 +22,7 @@ export default function Dashboard() {
 
   const handleLogout = () => {
     logout();
-    router.push("/admin");
+    router.push("/login");
   };
 
   const openAdd = () => {
@@ -33,6 +33,11 @@ export default function Dashboard() {
   const openEdit = (p: IProduct) => {
     setEditProduct(p);
     setShowForm(true);
+  };
+
+  const closeFormModal = () => {
+    setShowForm(false);
+    setEditProduct(null);
   };
 
   const handleDelete = (id: string) => {
@@ -121,16 +126,16 @@ export default function Dashboard() {
 
         {/* Categories Tab */}
         {tab === "categories" && <Admin.CategoryManager />}
+
+        {/* Users Tab */}
+        {tab === "users" && <Admin.UserManager />}
       </div>
 
       {/* Product Form Modal */}
       {showForm && (
         <Admin.ProductForm
           product={editProduct}
-          onClose={() => {
-            setShowForm(false);
-            setEditProduct(null);
-          }}
+          onClose={() => closeFormModal()}
         />
       )}
     </div>
