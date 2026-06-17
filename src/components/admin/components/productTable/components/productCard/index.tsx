@@ -1,8 +1,8 @@
 import Image from 'next/image';
 
-import IC from '@/components/icons';
 import { ICategory } from '@/interfaces/ICategory';
 import { IProduct } from '@/interfaces/IProduct';
+import IC from '@/utils/icons';
 
 import { ButtonTable } from '../buttonTable';
 

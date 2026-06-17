@@ -1,4 +1,4 @@
-import IC from "@/components/icons";
+import IC from "@/utils/icons";
 
 type CategoryFormProps = {
     handleAdd: (e: React.SyntheticEvent) => void;

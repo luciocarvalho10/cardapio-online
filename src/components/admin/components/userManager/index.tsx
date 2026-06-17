@@ -1,4 +1,4 @@
-import IC from '@/components/icons';
+import IC from '@/utils/icons';
 import userIcons from '@/utils/userIcons';
 
 type User = {

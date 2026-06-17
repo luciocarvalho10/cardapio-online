@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import IC from '@/components/icons';
 import Logo from '@/components/logo';
 import ThemeButton from '@/components/themeButton';
+import IC from '@/utils/icons';
 
 type HeaderProps = {
   handleLogout: () => void;

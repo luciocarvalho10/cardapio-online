@@ -2,9 +2,9 @@
 import Image from 'next/image';
 import { SyntheticEvent,useEffect, useState } from 'react';
 
-import IC from '@/components/icons';
 import { useMenu } from '@/context/menu/useMenu';
 import { IProduct } from '@/interfaces/IProduct';
+import IC from '@/utils/icons';
 
 interface Props {
   product?: IProduct | null;

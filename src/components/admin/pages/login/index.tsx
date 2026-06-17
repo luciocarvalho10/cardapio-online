@@ -3,10 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SyntheticEvent, useState } from "react";
 
-import IC from "@/components/icons";
 import Loanding from '@/components/loanding'
 import ThemeButton from "@/components/themeButton";
 import { useMenu } from "@/context/menu/useMenu";
+import IC from "@/utils/icons";
 
 export default function Login() {
   const { login, isDarkMode } = useMenu();

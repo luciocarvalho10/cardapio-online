@@ -1,5 +1,5 @@
-import IC from '@/components/icons';
 import { IProduct } from '@/interfaces/IProduct';
+import IC from '@/utils/icons';
 
 import ProductTableComponents from './components';
 

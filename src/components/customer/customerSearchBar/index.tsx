@@ -1,4 +1,4 @@
-import IC from '@/components/icons';
+import IC from '@/utils/icons';
 
 type CustomerSearchBarProps = {
   search: string;

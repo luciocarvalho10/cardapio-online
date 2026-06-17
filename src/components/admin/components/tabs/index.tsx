@@ -1,7 +1,7 @@
 import { SetStateAction } from 'react';
 
 import { Tab } from '@/components/admin/pages/dashboard'
-import IC from '@/components/icons';
+import IC from '@/utils/icons';
 
 type TabsProps = {
   tab: Tab;

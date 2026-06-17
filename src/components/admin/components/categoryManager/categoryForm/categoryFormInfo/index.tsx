@@ -1,5 +1,5 @@
-import IC from '@/components/icons';
 import { ICategory } from '@/interfaces/ICategory';
+import IC from '@/utils/icons';
 
 type CategoryFormInfoProps = {
   categories: ICategory[];

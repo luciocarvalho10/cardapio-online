@@ -1,5 +1,5 @@
-import IC from '@/components/icons';
 import { useMenu } from '@/context/menu/useMenu';
+import IC from '@/utils/icons';
 
 export function ThemeButtonBar() {
   const { isDarkMode, toggleDarkMode } = useMenu();
