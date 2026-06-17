@@ -1,5 +1,5 @@
 import IC from '@/utils/icons';
-import userIcons from '@/utils/userIcons';
+import userIcons from '@/utils/icons/userIcons';
 
 type User = {
   id: string;

@@ -6,8 +6,8 @@ import {
 import { useDrag, useDrop } from 'react-dnd';
 
 import { ICategory } from '@/interfaces/ICategory'
-import categoryIcons from '@/utils/categoryIcons';
 import IC from '@/utils/icons';
+import categoryIcons from '@/utils/icons/categories';
 
 interface DraggableCategoryItemProps {
   cat: ICategory;

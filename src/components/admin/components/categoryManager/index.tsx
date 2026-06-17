@@ -3,7 +3,7 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 
 import { useMenu } from '@/context/menu/useMenu';
 import { ICategory } from '@/interfaces/ICategory';
-import categoryIcons from '@/utils/categoryIcons';
+import categoryIcons from '@/utils/icons/categories';
 
 import CategoryForm from './categoryForm';
 import CategoryFormInfo from './categoryForm/categoryFormInfo';
