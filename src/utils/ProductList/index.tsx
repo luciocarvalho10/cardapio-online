@@ -6,27 +6,18 @@ import { useMenu } from '@/context/menu/useMenu';
 import { IProduct } from '@/interfaces/IProduct'; // Ajuste o caminho
 
 export default function ProductList() {
-  const { ProductRepository } = useMenu();
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const { products, addProduct, deleteProduct } = useMenu();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Exemplo de uso do método listen para updates em tempo real
-    const unsubscribe = ProductRepository.listen(latestProducts => {
-      setProducts(latestProducts);
-      setLoading(false);
-    });
-
-    // Retorne a função de desinscrição para limpar o listener
-    return () => unsubscribe();
-  }, [ProductRepository]); // Re-execute se a instância do repositório mudar (improvável)
+    if (products) setLoading(false);
+  }, [products]);
 
   const handleAddProduct = async () => {
     try {
       setLoading(true);
-      const newProduct: IProduct = {
-        id: 'prod-1',
+      const newProduct: Omit<IProduct, 'id'> = {
         name: 'Bruschetta ao Tomate',
         description:
           'Pão italiano tostado com tomate fresco, alho, azeite e manjericão',
@@ -37,7 +28,7 @@ export default function ProductList() {
         available: true,
         showable: true,
       };
-      await ProductRepository.create(newProduct);
+      await addProduct(newProduct);
       setLoading(false);
       alert('Produto adicionado com sucesso!');
     } catch (err) {
@@ -50,7 +41,7 @@ export default function ProductList() {
   const handleDeleteProduct = async (id: string) => {
     try {
       setLoading(true);
-      await ProductRepository.delete(id);
+      await deleteProduct(id);
       setLoading(false);
       alert('Produto deletado com sucesso!');
     } catch (err) {

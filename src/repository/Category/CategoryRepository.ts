@@ -9,6 +9,8 @@ import {
   update,
 } from 'firebase/database';
 
+import { CategoryEntity } from '@/entities/category/categoryEntity';
+import { CategoryMapper } from '@/entities/category/mapper/categoryMapper';
 import { ICategory } from '@/interfaces/ICategory';
 import { IRepository } from '@/interfaces/IRepository';
 
@@ -48,10 +50,12 @@ export class CategoryRepository implements IRepository<ICategory, string> {
 
   // --- Métodos CRUD ---
 
-  async create(item: ICategory): Promise<ICategory> {
-    const itemRef = this.getItemRef(item.id);
-    await set(itemRef, item);
-    return item;
+  async create(item: ICategory | CategoryEntity): Promise<ICategory> {
+    const persistence: ICategory =
+      item instanceof CategoryEntity ? CategoryMapper.toPersistence(item) : item;
+    const itemRef = this.getItemRef(persistence.id);
+    await set(itemRef, persistence);
+    return persistence;
   }
 
   async getById(id: string): Promise<ICategory | null> {
@@ -72,9 +76,19 @@ export class CategoryRepository implements IRepository<ICategory, string> {
     return [];
   }
 
+  async getByIdDomain(id: string): Promise<CategoryEntity | null> {
+    const dto = await this.getById(id);
+    return dto ? CategoryMapper.toDomain(dto) : null;
+  }
+
+  async getAllDomain(): Promise<CategoryEntity[]> {
+    const list = await this.getAll();
+    return CategoryMapper.toDomainList(list);
+  }
+
   async update(
     id: string,
-    updates: Partial<ICategory>,
+    updates: Partial<ICategory> | Partial<CategoryEntity>,
   ): Promise<ICategory | null> {
     const itemRef = this.getItemRef(id);
     const existingItem = await this.getById(id);
@@ -83,8 +97,13 @@ export class CategoryRepository implements IRepository<ICategory, string> {
       return null; // Item não encontrado para atualização
     }
 
-    await update(itemRef, updates);
-    return { ...existingItem, ...updates }; // Retorna o item com as atualizações aplicadas
+    const toPersistence: Partial<ICategory> =
+      updates instanceof CategoryEntity
+        ? CategoryMapper.toPersistence(updates)
+        : (updates as Partial<ICategory>);
+
+    await update(itemRef, toPersistence);
+    return { ...existingItem, ...toPersistence }; // Retorna o item com as atualizações aplicadas
   }
 
   async delete(id: string): Promise<boolean> {

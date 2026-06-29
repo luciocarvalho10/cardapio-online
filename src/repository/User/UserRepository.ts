@@ -9,6 +9,8 @@ import {
   update,
 } from 'firebase/database';
 
+import { UserMapper } from '@/entities/user/mapper/userMapper';
+import { UserEntity } from '@/entities/user/userEntity';
 import { IRepository } from '@/interfaces/IRepository'; // Ajuste o caminho
 import { IUser } from '@/interfaces/IUser';
 
@@ -52,10 +54,12 @@ export class UserRepository implements IRepository<IUser, string> {
 
   // --- Métodos CRUD ---
 
-  async create(item: IUser): Promise<IUser> {
-    const itemRef = this.getItemRef(item.id);
-    await set(itemRef, item);
-    return item;
+  async create(item: IUser | UserEntity): Promise<IUser> {
+    const persistence: IUser =
+      item instanceof UserEntity ? UserMapper.toPersistence(item) : item;
+    const itemRef = this.getItemRef(persistence.id);
+    await set(itemRef, persistence);
+    return persistence;
   }
 
   async getById(id: string): Promise<IUser | null> {
@@ -76,9 +80,19 @@ export class UserRepository implements IRepository<IUser, string> {
     return [];
   }
 
+  async getByIdDomain(id: string): Promise<UserEntity | null> {
+    const dto = await this.getById(id);
+    return dto ? UserMapper.toDomain(dto) : null;
+  }
+
+  async getAllDomain(): Promise<UserEntity[]> {
+    const list = await this.getAll();
+    return UserMapper.toDomainList(list);
+  }
+
   async update(
     id: string,
-    updates: Partial<IUser>,
+    updates: Partial<IUser> | Partial<UserEntity>,
   ): Promise<IUser | null> {
     const itemRef = this.getItemRef(id);
     const existingItem = await this.getById(id);
@@ -87,8 +101,13 @@ export class UserRepository implements IRepository<IUser, string> {
       return null; // Item não encontrado para atualização
     }
 
-    await update(itemRef, updates);
-    return { ...existingItem, ...updates }; // Retorna o item com as atualizações aplicadas
+    const toPersistence: Partial<IUser> =
+      updates instanceof UserEntity
+        ? UserMapper.toPersistence(updates)
+        : (updates as Partial<IUser>);
+
+    await update(itemRef, toPersistence);
+    return { ...existingItem, ...toPersistence }; // Retorna o item com as atualizações aplicadas
   }
 
   async delete(id: string): Promise<boolean> {

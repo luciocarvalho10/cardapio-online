@@ -9,6 +9,8 @@ import {
   update,
 } from 'firebase/database';
 
+import { ProductEntity } from '@/entities/product/productEntity';
+import { ProductMapper } from '@/entities/product/productMapper';
 import { IProduct } from '@/interfaces/IProduct';
 import { IRepository } from '@/interfaces/IRepository'; // Ajuste o caminho
 
@@ -52,10 +54,12 @@ export class ProductRepository implements IRepository<IProduct, string> {
 
   // --- Métodos CRUD ---
 
-  async create(item: IProduct): Promise<IProduct> {
-    const itemRef = this.getItemRef(item.id);
-    await set(itemRef, item);
-    return item;
+  async create(item: IProduct | ProductEntity): Promise<IProduct> {
+    const persistence: IProduct =
+      item instanceof ProductEntity ? ProductMapper.toPersistence(item) : item;
+    const itemRef = this.getItemRef(persistence.id);
+    await set(itemRef, persistence);
+    return persistence;
   }
 
   async getById(id: string): Promise<IProduct | null> {
@@ -76,9 +80,19 @@ export class ProductRepository implements IRepository<IProduct, string> {
     return [];
   }
 
+  async getByIdDomain(id: string): Promise<ProductEntity | null> {
+    const dto = await this.getById(id);
+    return dto ? ProductMapper.toDomain(dto) : null;
+  }
+
+  async getAllDomain(): Promise<ProductEntity[]> {
+    const list = await this.getAll();
+    return ProductMapper.toDomainList(list);
+  }
+
   async update(
     id: string,
-    updates: Partial<IProduct>,
+    updates: Partial<IProduct> | Partial<ProductEntity>,
   ): Promise<IProduct | null> {
     const itemRef = this.getItemRef(id);
     const existingItem = await this.getById(id);
@@ -87,8 +101,13 @@ export class ProductRepository implements IRepository<IProduct, string> {
       return null; // Item não encontrado para atualização
     }
 
-    await update(itemRef, updates);
-    return { ...existingItem, ...updates }; // Retorna o item com as atualizações aplicadas
+    const toPersistence: Partial<IProduct> =
+      updates instanceof ProductEntity
+        ? ProductMapper.toPersistence(updates)
+        : (updates as Partial<IProduct>);
+
+    await update(itemRef, toPersistence);
+    return { ...existingItem, ...toPersistence }; // Retorna o item com as atualizações aplicadas
   }
 
   async delete(id: string): Promise<boolean> {

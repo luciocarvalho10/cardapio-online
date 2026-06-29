@@ -1,6 +1,7 @@
 import {
   Dispatch,
   SetStateAction,
+  useCallback,
   useRef,
 } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
@@ -62,11 +63,16 @@ export default function DraggableCategoryItem({
     },
   });
 
-  drag(drop(ref));
+  // drag(drop(ref));
+  const connectRef = useCallback((node: HTMLDivElement | null) => {
+    if (node) {
+      drag(drop(node));
+    }
+  }, [drag, drop]);
 
   return (
     <div
-      ref={ref}
+      ref={connectRef}
       style={{ opacity: isDragging ? 0.5 : 1 }}
       className='dark:hover:bg-gray-750 group flex cursor-move items-center gap-3 rounded-xl bg-gray-50 p-4 transition-colors hover:bg-gray-100 dark:bg-gray-800'>
       <IC.GripVertical

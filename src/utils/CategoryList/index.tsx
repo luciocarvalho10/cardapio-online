@@ -6,32 +6,23 @@ import { useMenu } from '@/context/menu/useMenu';
 import { ICategory } from '@/interfaces/ICategory'; // Ajuste o caminho
 
 export default function CategoryList() {
-  const { CategoryRepository } = useMenu();
-  const [categories, setCategory] = useState<ICategory[]>([]);
+  const { categories, addCategory, deleteCategory } = useMenu();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Exemplo de uso do método listen para updates em tempo real
-    const unsubscribe = CategoryRepository.listen(latestCategory => {
-      setCategory(latestCategory);
-      setLoading(false);
-    });
-
-    // Retorne a função de desinscrição para limpar o listener
-    return () => unsubscribe();
-  }, [CategoryRepository]); // Re-execute se a instância do repositório mudar (improvável)
+    if (categories) setLoading(false);
+  }, [categories]);
 
   const handleAddCategory = async () => {
     try {
       setLoading(true);
-      const newCategory: ICategory = {
-        id: 'cat-1',
+      const newCategory: Omit<ICategory, 'id'> = {
         name: 'Entradas',
         icon: '🥗',
-        order: 1,
+        order: (categories[categories.length - 1]?.order ?? 0) + 1,
       };
-      await CategoryRepository.create(newCategory);
+      await addCategory(newCategory);
       setLoading(false);
       alert('Categoria adicionada com sucesso!');
     } catch (err) {
@@ -44,7 +35,7 @@ export default function CategoryList() {
   const handleDeleteCategory = async (id: string) => {
     try {
       setLoading(true);
-      await CategoryRepository.delete(id);
+      await deleteCategory(id);
       setLoading(false);
       alert('Categoria deletada com sucesso!');
     } catch (err) {
