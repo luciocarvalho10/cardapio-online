@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { SyntheticEvent,useEffect, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 
 import { useMenu } from '@/context/menu/useMenu';
 import { IProduct } from '@/interfaces/IProduct';
@@ -13,30 +13,28 @@ interface Props {
 
 export default function ProductForm({ product, onClose }: Props) {
   const { categories, addProduct, updateProduct } = useMenu();
-  const [form, setForm] = useState({
-    name: '',
-    description: '',
-    price: '',
-    image: '',
-    categoryId: categories[0]?.id || '',
-    available: true,
-    showable: true,
-  });
+  const [form, setForm] = useState(() =>
+    product
+      ? {
+          name: product.name,
+          description: product.description,
+          price: product.price.toString(),
+          image: product.image,
+          categoryId: product.categoryId,
+          available: product.available,
+          showable: product.showable,
+        }
+      : {
+          name: '',
+          description: '',
+          price: '',
+          image: '',
+          categoryId: categories[0]?.id || '',
+          available: true,
+          showable: true,
+        },
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    if (product) {
-      setForm({
-        name: product.name,
-        description: product.description,
-        price: product.price.toString(),
-        image: product.image,
-        categoryId: product.categoryId,
-        available: product.available,
-        showable: product.showable,
-      });
-    }
-  }, [product]);
 
   const validate = () => {
     const e: Record<string, string> = {};

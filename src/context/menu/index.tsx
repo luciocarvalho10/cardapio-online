@@ -41,7 +41,12 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   const [users, setUsers] = useState<IUser[]>([]);
   const [counts, setCounts] = useState<ICounter[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('darkMode') === 'true';
+    }
+    return false;
+  });
 
   const computeCounts = useMemo(
     () => (cats: ICategory[], prods: IProduct[], usrs: IUser[]): ICounter[] => [
@@ -66,7 +71,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         setProducts(prods);
         setUsers(usrs);
         setCounts(computeCounts(cats, prods, usrs));
-      } catch (e) {
+      } catch {
         // noop (poderia logar/mostrar toast)
       }
     })();
@@ -74,14 +79,6 @@ export function MenuProvider({ children }: { children: ReactNode }) {
       mounted = false;
     };
   }, [computeCounts]);
-
-  useEffect(() => {
-    // Carregar valor salvo do localStorage na montagem do cliente
-    if (typeof window !== 'undefined') {
-      const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-      setIsDarkMode(savedDarkMode);
-    }
-  }, []);
 
   useEffect(() => {
     // Atualizar classe do DOM e salvar no localStorage

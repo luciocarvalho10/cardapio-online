@@ -1,5 +1,5 @@
 'use client';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useMemo, useState } from 'react';
 
 import { useMenu } from '@/context/menu/useMenu';
 import { ICategory } from '@/interfaces/ICategory';
@@ -18,18 +18,17 @@ export default function CategoryManager() {
   const [form, setForm] = useState({ name: '', icon: '🍽️', order: categories.length + 1 });
   const [editForm, setEditForm] = useState({ name: '', icon: '', order: 0 });
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
-  const [orderedCategories, setOrderedCategories] = useState<ICategory[]>([]);
-
-  useEffect(() => {
-    setOrderedCategories([...categories]);
-  }, [categories]);
+  const ordered = useMemo(
+    () => [...categories].sort((a, b) => a.order - b.order),
+    [categories],
+  );
 
   const getProductCount = (catId: string) =>
     products.filter(p => p.categoryId === catId).length;
 
   const moveCategory = (dragIndex: number, hoverIndex: number) => {
-    const draggedCategory = orderedCategories[dragIndex];
-    const newCategories = [...orderedCategories];
+    const draggedCategory = ordered[dragIndex];
+    const newCategories = [...ordered];
     newCategories.splice(dragIndex, 1);
     newCategories.splice(hoverIndex, 0, draggedCategory);
 
@@ -38,8 +37,6 @@ export default function CategoryManager() {
       ...cat,
       order: idx + 1,
     }));
-
-    setOrderedCategories(updatedCategories);
 
     // Persist the new order
     updatedCategories.forEach(cat => {
@@ -103,7 +100,7 @@ export default function CategoryManager() {
 
         {/* Categories List */}
         <div className='space-y-2'>
-          {orderedCategories.map((cat, index) => (
+          {ordered.map((cat, index) => (
             <DraggableCategoryItem
               key={cat.id}
               cat={cat}

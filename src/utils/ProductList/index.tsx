@@ -1,22 +1,17 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useMenu } from '@/context/menu/useMenu';
 import { IProduct } from '@/interfaces/IProduct'; // Ajuste o caminho
 
 export default function ProductList() {
   const { products, addProduct, deleteProduct } = useMenu();
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (products) setLoading(false);
-  }, [products]);
+  const loading = products.length === 0;
 
   const handleAddProduct = async () => {
     try {
-      setLoading(true);
       const newProduct: Omit<IProduct, 'id'> = {
         name: 'Bruschetta ao Tomate',
         description:
@@ -29,24 +24,19 @@ export default function ProductList() {
         showable: true,
       };
       await addProduct(newProduct);
-      setLoading(false);
       alert('Produto adicionado com sucesso!');
     } catch (err) {
       setError('Erro ao adicionar produto.');
-      setLoading(false);
       console.error(err);
     }
   };
 
   const handleDeleteProduct = async (id: string) => {
     try {
-      setLoading(true);
       await deleteProduct(id);
-      setLoading(false);
       alert('Produto deletado com sucesso!');
     } catch (err) {
       setError('Erro ao deletar produto.');
-      setLoading(false);
       console.error(err);
     }
   };
@@ -57,7 +47,7 @@ export default function ProductList() {
   return (
     <div>
       <h1>Lista de Produtos</h1>
-      <button onClick={handleAddProduct} disabled={loading}>
+      <button onClick={handleAddProduct}>
         Adicionar Produto
       </button>
       <ul>
@@ -65,8 +55,7 @@ export default function ProductList() {
           <li key={product.id}>
             {product.name} - R${product.price.toFixed(2)}
             <button
-              onClick={() => handleDeleteProduct(product.id)}
-              disabled={loading}>
+              onClick={() => handleDeleteProduct(product.id)}>
               Deletar
             </button>
           </li>
