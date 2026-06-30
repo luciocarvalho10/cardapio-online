@@ -37,53 +37,55 @@ export default function CustomerPage() {
         );
 
   return (
-    <div className="min-h-screen bg-[#fdf8f3] dark:bg-gray-950 transition-colors duration-300">
-      {/* Hero */}
-      <Banner />
+    <div className=" flex flex-col justify-between min-h-screen bg-[#fdf8f3] dark:bg-gray-950 transition-colors duration-300">
+      <div>
+        {/* Hero */}
+        <Banner />
 
-      {/* Search + Filter Bar */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 shadow-md dark:shadow-gray-900/50 transition-colors duration-300">
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          {/* Search */}
-          <Customer.CustomerSearchBar
-            search={search}
-            setSearch={setSearch}
-          />
+        {/* Search + Filter Bar */}
+        <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 shadow-md dark:shadow-gray-900/50 transition-colors duration-300">
+          <div className="max-w-6xl mx-auto px-4 py-3">
+            {/* Search */}
+            <Customer.CustomerSearchBar
+              search={search}
+              setSearch={setSearch}
+            />
 
-          {/* Category Tabs */}
-          <Customer.CustomerCategoryTabs
-            categories={categories}
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-          />
+            {/* Category Tabs */}
+            <Customer.CustomerCategoryTabs
+              categories={categories}
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+            />
+          </div>
         </div>
-      </div>
 
-      {/* Menu Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {displayGroups.length === 0 ? (
-          <NotProduct />
-        ) : (
-          displayGroups.map(({ category, items }) => (
-            <div
-              key={category.id}
-              className="mb-12"
-            >
-              {/* Category Header */}
-              <Customer.CustomerCategoryHeader category={category} />
+        {/* Menu Content */}
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          {displayGroups.length === 0 ? (
+            <NotProduct />
+          ) : (
+            displayGroups.map(({ category, items }) => (
+              <div
+                key={category.id}
+                className="mb-12"
+              >
+                {/* Category Header */}
+                <Customer.CustomerCategoryHeader category={category} />
 
-              {/* Products Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {items.map((product) => (
-                  <Customer.CustomerProductCard
-                    key={product.id}
-                    product={product}
-                  />
-                ))}
+                {/* Products Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {items.map((product) => (
+                    <Customer.CustomerProductCard
+                      key={product.id}
+                      product={product}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
 
       {/* Footer */}

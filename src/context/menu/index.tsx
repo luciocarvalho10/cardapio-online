@@ -41,12 +41,13 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   const [users, setUsers] = useState<IUser[]>([]);
   const [counts, setCounts] = useState<ICounter[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('darkMode') === 'true';
-    }
-    return false;
-  });
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true)
+  //   () => {
+  //   if (typeof window !== 'undefined') {
+  //     return localStorage.getItem('darkMode') === 'true';
+  //   }
+  //   return false;
+  // });
 
   const computeCounts = useMemo(
     () => (cats: ICategory[], prods: IProduct[], usrs: IUser[]): ICounter[] => [
