@@ -29,7 +29,6 @@
 !.idea/vcs.xml
 !.idea/jsLibraryMappings.xml
 
-
 # dependencies
 /node_modules
 /.pnp
@@ -71,3 +70,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editor and local-tooling files that should not be committed
+.vscode/
+.idea/
+.agents/
+.claude/
+.windsurf/
+AGENTS.md
+CLAUDE.md
